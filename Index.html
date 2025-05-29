@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiplication Table Game (1-12)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+            margin: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(12, 60px);
+            gap: 5px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        button {
+            width: 60px;
+            height: 60px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button.clicked {
+            background-color: #2196F3;
+        }
+        #reset {
+            width: auto;
+            padding: 10px 20px;
+            margin-top: 20px;
+            background-color: #f44336;
+        }
+        #reset:hover {
+            background-color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <h1>Multiplication Table Game (1-12)</h1>
+    <p>Click a button to reveal the answer. Click again to hide it.</p>
+    <div class="grid" id="grid"></div>
+    <button id="reset">Reset All</button>
+
+    <script>
+        // Create the 12x12 multiplication grid
+        const grid = document.getElementById('grid');
+        const resetBtn = document.getElementById('reset');
+        const buttons = [];
+
+        for (let i = 1; i <= 12; i++) {
+            for (let j = 1; j <= 12; j++) {
+                const button = document.createElement('button');
+                button.textContent = `${i}x${j}`;
+                button.dataset.answer = i * j;
+                button.dataset.showing = 'false';
+                button.addEventListener('click', function() {
+                    if (this.dataset.showing === 'false') {
+                        this.textContent = this.dataset.answer;
+                        this.classList.add('clicked');
+                        this.dataset.showing = 'true';
+                    } else {
+                        this.textContent = `${i}x${j}`;
+                        this.classList.remove('clicked');
+                        this.dataset.showing = 'false';
+                    }
+                });
+                grid.appendChild(button);
+                buttons.push(button);
+            }
+        }
+
+        // Reset all buttons to show problems
+        resetBtn.addEventListener('click', () => {
+            buttons.forEach(button => {
+                const [i, j] = button.textContent.split('x').map(Number);
+                button.textContent = `${i || button.dataset.answer / j}x${j || button.dataset.answer / i}`;
+                button.classList.remove('clicked');
+                button.dataset.showing = 'false';
+            });
+        });
+    </script>
+</body>
+</html>
