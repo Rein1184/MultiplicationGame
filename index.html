@@ -66,6 +66,8 @@
                 const button = document.createElement('button');
                 button.textContent = `${i}x${j}`;
                 button.dataset.answer = i * j;
+                button.dataset.i = i; // Store original i
+                button.dataset.j = j; // Store original j
                 button.dataset.showing = 'false';
                 button.addEventListener('click', function() {
                     if (this.dataset.showing === 'false') {
@@ -73,7 +75,7 @@
                         this.classList.add('clicked');
                         this.dataset.showing = 'true';
                     } else {
-                        this.textContent = `${i}x${j}`;
+                        this.textContent = `${this.dataset.i}x${this.dataset.j}`;
                         this.classList.remove('clicked');
                         this.dataset.showing = 'false';
                     }
@@ -86,8 +88,7 @@
         // Reset all buttons to show problems
         resetBtn.addEventListener('click', () => {
             buttons.forEach(button => {
-                const [i, j] = button.textContent.split('x').map(Number);
-                button.textContent = `${i || button.dataset.answer / j}x${j || button.dataset.answer / i}`;
+                button.textContent = `${button.dataset.i}x${button.dataset.j}`;
                 button.classList.remove('clicked');
                 button.dataset.showing = 'false';
             });
